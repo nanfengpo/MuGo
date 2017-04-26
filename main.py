@@ -41,6 +41,7 @@ def gtp(strategy, read_file=None):
             sys.stdout.write(engine_reply)
             sys.stdout.flush()
 
+
 def preprocess(*data_sets, processed_dir="processed_data"):
     processed_dir = os.path.join(os.getcwd(), processed_dir)
     if not os.path.isdir(processed_dir):
@@ -61,6 +62,7 @@ def preprocess(*data_sets, processed_dir="processed_data"):
         train_filename = os.path.join(processed_dir, "train%s.chunk.gz" % i)
         train_dataset.write(train_filename)
     print("%s chunks written" % (i+1))
+
 
 def train(processed_dir, read_file=None, save_file=None, epochs=10, logdir=None, checkpoint_freq=10000):
     test_dataset = DataSet.read(os.path.join(processed_dir, "test.chunk.gz"))

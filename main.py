@@ -43,6 +43,19 @@ def gtp(strategy, read_file=None):
 
 
 def preprocess(*data_sets, processed_dir="processed_data"):
+    '''
+     preprocess the SGF files. This takes all positions in the SGF files and extracts features for each position,
+     as well as recording the correct next move. These positions are then split into chunks,
+     with one test chunk and the remainder as training chunks.
+     This step may take a while, and must be repeated if you change the feature extraction steps in features.py
+    :param data_sets: 下载的sgf文件目录
+    :param processed_dir: 处理后的放置目录名
+    :return:
+    '''
+    # os.path.join()：合并项目地址与相对地址，组成绝对地址
+    # os.getcwd()：得到项目当前地址
+    # os.path.isdir()：检测地址是否存在
+    # os.mkdir()：新建目录
     processed_dir = os.path.join(os.getcwd(), processed_dir)
     if not os.path.isdir(processed_dir):
         os.mkdir(processed_dir)

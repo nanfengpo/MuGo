@@ -24,7 +24,7 @@ Preprocess SGFs
 ---------------
 Third, preprocess the SGF files. This takes all positions in the SGF files and extracts features for each position, as well as recording the correct next move. These positions are then split into chunks, with one test chunk and the remainder as training chunks. This step may take a while, and must be repeated if you change the feature extraction steps in `features.py`
 ```
-python main.py preprocess data/kgs-*
+python3 main.py preprocess data/kgs-*
 ```
 (This example takes advantage of bash wildcard expansion - say, if the KGS directories are named data/kgs-2006-01, data/kgs-2006-02, and so on.)
 
@@ -32,13 +32,13 @@ Supervised learning (policy network)
 ------------------------------------
 With the preprocessed SGF data (default output directory is `./processed_data/`), you can train the policy network.
 ```
-python main.py train processed_data/ --save-file=/tmp/savedmodel --epochs=1 --logdir=logs/my_training_run
+python main.py train processed_data/ --save-file=tmp/savedmodel --epochs=1 --logdir=logs/my_training_run
 ```
 
 As the network is trained, the current model will be saved at `--save-file`. You can resume training the same network as follows:
 ```
-python main.py train processed_data/ --read-file=/tmp/savedmodel
- --save-file=/tmp/savedmodel --epochs=10 --logdir=logs/my_training_run
+python3 main.py train processed_data/ --read-file=tmp/savedmodel
+ --save-file=tmp/savedmodel --epochs=10 --logdir=logs/my_training_run
 ```
 
 Additionally, you can follow along with the training progress with TensorBoard - if you give each run a different name (`logs/my_training_run`, `logs/my_training_run2`), you can overlay the runs on top of each other.
@@ -50,23 +50,23 @@ Play against MuGo
 -----------------
 MuGo uses the GTP protocol, and you can use any gtp-compliant program with it. To invoke the raw policy network, use
 ```
-python main.py gtp policy --read-file=/tmp/savedmodel
+python3 main.py gtp policy --read-file=tmp/savedmodel
 ```
 
 To invoke the MCTS-integrated version of the policy network, use
 ```
-python main.py gtp mcts --read-file=/tmp/savedmodel
+python3 main.py gtp mcts --read-file=tmp/savedmodel
 ```
 
 One way to play via GTP is to use gogui-display (which implements a UI that speaks GTP.) You can download the gogui set of tools at [http://gogui.sourceforge.net/](http://gogui.sourceforge.net/). See also [documentation on interesting ways to use GTP](http://gogui.sourceforge.net/doc/reference-twogtp.html).
 ```
-gogui-twogtp -black 'python main.py gtp policy --read-file=/tmp/savedmodel' -white 'gogui-display' -size 19 -komi 7.5 -verbose -auto
+gogui-twogtp -black 'python3 main.py gtp policy --read-file=tmp/savedmodel' -white 'gogui-display' -size 19 -komi 7.5 -verbose -auto
 ```
 
 Another way to play via GTP is to play against GnuGo, while spectating the games
 ```
 BLACK="gnugo --mode gtp"
-WHITE="python main.py gtp policy --read-file=/tmp/savedmodel"
+WHITE="python3 main.py gtp policy --read-file=tmp/savedmodel"
 TWOGTP="gogui-twogtp -black \"$BLACK\" -white \"$WHITE\" -games 10 \
   -size 19 -alternate -sgffile gnugo"
 gogui -size 19 -program "$TWOGTP" -computer-both -auto
@@ -80,5 +80,5 @@ After configuring your cgos.config file, you can connect to CGOS with `cgosGtp -
 Running unit tests
 ------------------
 ```python
-python -m unittest discover tests
+python3 -m unittest discover tests
 ```

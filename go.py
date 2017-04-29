@@ -43,6 +43,7 @@ def set_board_size(n):
     def check_bounds(c):
         return c[0] % n == c[0] and c[1] % n == c[1]
 
+    # NEIGHBORS和DIAGONALS是坐标的序列
     NEIGHBORS = {(x, y): list(filter(check_bounds, [(x+1, y), (x-1, y), (x, y+1), (x, y-1)])) for x, y in ALL_COORDS}
     DIAGONALS = {(x, y): list(filter(check_bounds, [(x+1, y+1), (x+1, y-1), (x-1, y+1), (x-1, y-1)])) for x, y in ALL_COORDS}
 
@@ -50,11 +51,12 @@ def place_stones(board, color, stones):
     for s in stones:
         board[s] = color
 
+# board是棋盘（2维向量），c是坐标
 def find_reached(board, c):
     color = board[c]
     chain = set([c])
-    reached = set()
-    frontier = [c]
+    reached = set() # 相接触的同色旗子的集合
+    frontier = [c] # 前线，即同色旗子的边缘
     while frontier:
         current = frontier.pop()
         chain.add(current)
@@ -66,7 +68,7 @@ def find_reached(board, c):
     return chain, reached
 
 def is_koish(board, c):
-    'Check if c is surrounded on all sides by 1 color, and return that color'
+    'Check if c is surrounded on all sides by one color, and return that color'
     if board[c] != EMPTY: return None
     neighbors = {board[n] for n in NEIGHBORS[c]}
     if len(neighbors) == 1 and not EMPTY in neighbors:
